@@ -62,6 +62,7 @@ impl Ledger {
         }
     }
 
+    #[allow(dead_code)]
     pub fn get(&self, client_id: u16) -> Option<&Account> {
         self.accounts.get(&client_id)
     }

@@ -46,9 +46,9 @@ const EXPECTED_TRANSACTIONS: [Transaction; 5] = [
 // test that all transactions types are parsed correctly from CSV format
 #[test]
 fn transactions_parser_returns_correct_operations() {
-    let mut rdr = csv::Reader::from_reader(SAMPLE_DATA.as_bytes());
+    let mut reader = csv::Reader::from_reader(SAMPLE_DATA.as_bytes());
 
-    let parser = TransactionParser::new(&mut rdr);
+    let parser = TransactionParser::new(&mut reader);
 
     assert_eq!(
         parser.collect::<Vec<Transaction>>(),
