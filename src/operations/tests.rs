@@ -1,5 +1,6 @@
 use super::*;
 use crate::accounts::Account;
+use crate::transactions::{Transaction, TransactionType};
 
 // sample CSV data to parse
 const SAMPLE_DATA: &str = "\
@@ -25,7 +26,7 @@ fn transaction_are_parsed_correctly_into_ledger() {
 
     // deposit - withdrawal
     assert_eq!(
-        *ledger.get_or_create(1),
+        *ledger.get(1).unwrap(),
         Account {
             client: 1,
             total: 37.5,
@@ -37,7 +38,7 @@ fn transaction_are_parsed_correctly_into_ledger() {
 
     // dispute with resolution
     assert_eq!(
-        *ledger.get_or_create(2),
+        *ledger.get(2).unwrap(),
         Account {
             client: 2,
             total: 25.0,
@@ -49,7 +50,7 @@ fn transaction_are_parsed_correctly_into_ledger() {
 
     // dispute with chargeback
     assert_eq!(
-        *ledger.get_or_create(3),
+        *ledger.get(3).unwrap(),
         Account {
             client: 3,
             total: 0.0,
@@ -58,4 +59,28 @@ fn transaction_are_parsed_correctly_into_ledger() {
             locked: true,
         }
     );
+}
+
+// expected CSV data with precision of four places past the decimal
+const EXPECTED_CSV: &str = "\
+client,available,held,total,locked
+1,1.2346,0.0000,1.2346,false
+";
+
+// test that all operation types are parsed correctly from CSV format
+#[test]
+fn ledger_exports_to_csv_correctly() {
+    let mut ledger = Ledger::new();
+    ledger.process_transaction(&Transaction {
+        transaction_type: TransactionType::Deposit,
+        client: 1,
+        tx: 1,
+        amount: Some(1.23456789),
+    });
+
+    let mut writer = csv::Writer::from_writer(vec![]);
+    write_ledger_to_csv(&mut ledger, &mut writer).unwrap();
+
+    let data = String::from_utf8(writer.into_inner().unwrap()).unwrap();
+    assert_eq!(data, EXPECTED_CSV);
 }

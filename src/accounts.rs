@@ -5,6 +5,7 @@ use crate::transactions::Transaction;
 use crate::transactions::TransactionType;
 
 use serde::Serializer;
+use std::collections::hash_map;
 use std::collections::HashMap;
 use std::collections::HashSet;
 
@@ -61,22 +62,12 @@ impl Ledger {
         }
     }
 
-    // get or create account for given client ID
-    pub fn get_or_create(&mut self, client_id: u16) -> &mut Account {
-        self.accounts
-            .entry(client_id)
-            .or_insert(Account::new(client_id))
+    pub fn get(&self, client_id: u16) -> Option<&Account> {
+        self.accounts.get(&client_id)
     }
 
-    pub fn write_to_csv<W>(&self, writer: &mut csv::Writer<W>) -> std::io::Result<()>
-    where
-        W: std::io::Write,
-    {
-        // serialize values in unsorted order
-        for val in self.accounts.values() {
-            writer.serialize(val)?;
-        }
-        writer.flush()
+    pub fn accounts(&self) -> hash_map::Values<u16, Account> {
+        self.accounts.values()
     }
 
     pub fn process_transaction(&mut self, transaction: &Transaction) {
@@ -98,6 +89,13 @@ impl Ledger {
                 self.process_chargeback(&transaction.client, &transaction.tx)
             }
         }
+    }
+
+    // get or create account for given client ID
+    fn get_or_create(&mut self, client_id: u16) -> &mut Account {
+        self.accounts
+            .entry(client_id)
+            .or_insert(Account::new(client_id))
     }
 
     fn process_deposit(&mut self, client_id: &u16, transaction_id: &u32, amount: &f32) {
