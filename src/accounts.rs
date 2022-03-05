@@ -19,14 +19,14 @@ where
 
 #[derive(PartialEq, Clone, Debug, Serialize)]
 pub struct Account {
-    client: u16,
+    pub client: u16,
     #[serde(serialize_with = "fixed_width")]
-    available: f32,
+    pub available: f32,
     #[serde(serialize_with = "fixed_width")]
-    held: f32,
+    pub held: f32,
     #[serde(serialize_with = "fixed_width")]
-    total: f32,
-    locked: bool,
+    pub total: f32,
+    pub locked: bool,
 }
 
 impl Account {

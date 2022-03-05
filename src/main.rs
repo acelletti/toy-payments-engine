@@ -5,6 +5,7 @@ extern crate serde;
 extern crate serde_derive;
 
 mod accounts;
+mod operations;
 mod transactions;
 
 fn main() {
