@@ -14,10 +14,10 @@ pub enum TransactionType {
 #[derive(PartialEq, Clone, Debug, Deserialize)]
 pub struct Transaction {
     #[serde(rename = "type")]
-    transaction_type: TransactionType,
-    client: u16,
-    tx: u32,
-    amount: Option<f32>,
+    pub transaction_type: TransactionType,
+    pub client: u16,
+    pub tx: u32,
+    pub amount: Option<f32>,
 }
 
 pub struct TransactionParser<'a, R>
