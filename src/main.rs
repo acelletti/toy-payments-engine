@@ -9,6 +9,7 @@ mod models;
 mod operations;
 mod tx_parser;
 
+#[cfg(not(tarpaulin_include))]
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let csv_file_path = std::env::args_os()
         .nth(1)
