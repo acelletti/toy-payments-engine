@@ -4,16 +4,17 @@ extern crate serde;
 #[macro_use]
 extern crate serde_derive;
 
-mod accounts;
+mod ledger;
+mod models;
 mod operations;
-mod transactions;
+mod tx_parser;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let csv_file_path = std::env::args_os()
         .nth(1)
         .expect("Usage cargo run -- <csv_file>");
 
-    let mut ledger = accounts::Ledger::new();
+    let mut ledger = ledger::Ledger::new();
 
     // update ledger with transactions from CSV file
     let mut reader = csv::Reader::from_path(csv_file_path)?;

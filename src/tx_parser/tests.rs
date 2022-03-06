@@ -1,4 +1,5 @@
 use super::*;
+use crate::models::transaction::TransactionType;
 
 // sample CSV data with one of each type
 const SAMPLE_DATA: &str = "\

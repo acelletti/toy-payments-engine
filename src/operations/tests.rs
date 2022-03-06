@@ -1,6 +1,6 @@
 use super::*;
-use crate::accounts::Account;
-use crate::transactions::{Transaction, TransactionType};
+use crate::models::account::Account;
+use crate::models::transaction::{Transaction, TransactionType};
 
 // sample CSV data to parse
 const SAMPLE_DATA: &str = "\

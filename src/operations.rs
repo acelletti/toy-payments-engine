@@ -1,10 +1,10 @@
 #[cfg(test)]
 mod tests;
 
-use crate::accounts::Ledger;
-use crate::transactions::TransactionParser;
+use crate::ledger::Ledger;
+use crate::tx_parser::TransactionParser;
 
-// parse transactions from CSV and add them to the ledger
+/// Parse transactions from CSV and add them to the ledger
 pub fn update_ledger_from_csv<R>(ledger: &mut Ledger, reader: &mut csv::Reader<R>)
 where
     R: std::io::Read,
@@ -16,6 +16,7 @@ where
     }
 }
 
+/// Write ledger to CSV
 pub fn write_ledger_to_csv<W>(ledger: &Ledger, writer: &mut csv::Writer<W>) -> std::io::Result<()>
 where
     W: std::io::Write,
